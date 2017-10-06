@@ -24,27 +24,41 @@ rank_data<- as.character(rank_data)
 #Let's have another look at the rankings
 head(rank_data)
 
+####################################################################################################
+# Lets start again
+# https://cran.r-project.org/web/packages/RSelenium/vignettes/RSelenium-basics.html
+# https://cran.r-project.org/web/packages/RSelenium/RSelenium.pdf
 
-# Dynamic content
 require(RSelenium)
 
-library(stringr)
+# set up server
+rD <- rsDriver(verbose = TRUE, port = 4571L)
 
-url <- "http://www.inc.com/"
+# set up driver
+remDr <- rD$client
 
-search <- "trump"
+# Tell RSelenium to go to a site
+remDr$navigate("https://forwardkeys.com/")
 
-url <- paste(url,"search?q=",search,sep = "")
+# Basic controls
+remDr$getTitle()
+remDr$goBack()
+remDr$goForward()
 
-checkForServer()
+# 'arg' should be one of "xpath", "css selector", "id", "name", "tag name", "class name", "link text", "partial link text"
+loginWindow <- remDr$findElement(using = "class", value = "login")
+loginWindow$clickElement()
 
-startServer(invisible = TRUE)
+# email
+input_email <- remDr$findElement(using = "name", value = "email")
+input_email$sendKeysToElement(list("jack@olney.co.uk"))
 
-# New way of accessing RSelenium, this needs exploring further
-RSelenium::rsDriver()
+# password
+input_password <- remDr$findElement(using = "name", value = "password")
+input_password$sendKeysToElement(list("password"))
 
-remDr <- remoteDriver()
+# click the login button
+login_button <- remDr$findElement(using = "id", value = "login_button")
+login_button$clickElement()
 
-# Open the browser webpage
-
-remDr$open()
+# Okay, now we can get past the login window... next step
