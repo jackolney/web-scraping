@@ -19,7 +19,7 @@ rank_data <- html_text(rank_data_html)
 head(rank_data)
 
 #Data-Preprocessing: Converting rankings to numerical
-rank_data<- as.character(rank_data)
+rank_data <- as.character(rank_data)
 
 #Let's have another look at the rankings
 head(rank_data)
